@@ -1,10 +1,10 @@
 import React from 'react'
-import DefaultLayout from './layouts/DefaultLayout'
+import ChatContainer from './container/ChatContainer'
 
 const App: React.FC = () => {
   return (
     <div>
-      <DefaultLayout>Helloo</DefaultLayout>
+      <ChatContainer />
     </div>
   )
 }
