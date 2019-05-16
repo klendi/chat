@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
+
+body {
+  background-color: #f3f5f7;
+  font-family: 'Lato';
+}
+
+.top-bar {
+  background-color: white;
+  /* text-align: center; */
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.top-bar-users {
+  font-weight: lighter;
+}
+
+.online-circle {
+  background-color: green;
+}
