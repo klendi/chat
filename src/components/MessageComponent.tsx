@@ -1,34 +1,27 @@
 import React from 'react'
-import { Container, Col, Row } from 'react-bootstrap'
+import classnames from 'classnames'
+import { Col } from 'react-bootstrap'
+
 interface IProps {
-  isUser?: boolean
+  isUser: boolean
+  user?: string
+  text: string
 }
-const DefaultLayout: React.FC<IProps> = props => {
-  if (props.isUser) {
-    return (
-      <div className="message-container-user">
-        <div className="message-this-user msg">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt sit
-          possimus, modi eveniet voluptatem porro quae dolore soluta aperiam
-          facilis vitae delectus non cupiditate ratione ut quisquam amet
-          corrupti magnam esse harum placeat distinctio nam accusamus
-          blanditiis. Libero quis dignissimos fugit eaque tenetur ipsa ab,
-          possimus laboriosam quam. Nostrum, illo.
-        </div>
-      </div>
-    )
-  }
+
+const MessageComponent: React.FC<IProps> = props => {
+  const cl1 = classnames(
+    props.isUser ? 'message-container-user' : 'message-container'
+  )
+  const cl2 = classnames(props.isUser ? 'message-this-user' : 'message', 'ms')
+  const cl3 = classnames(!props.isUser ? 'msg-text' : 'msg-text-user')
   return (
-    <div className="message-container">
-      <div className="message-user msg">Klendi</div>
-      <div className="message">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius,
-        laboriosam eligendi. Est consequuntur deserunt obcaecati? Lorem ipsum
-        dolor, sit amet consectetur adipisicing elit. Ut mollitia nisi esse unde
-        facere. Ad similique dolorem repellendus iste nihil?
+    <Col md={12} xl={12} className={cl1}>
+      <div className={cl2}>
+        {!props.isUser ? <span className="msg-user">{props.user}</span> : null}
+        <div className={cl3}>{props.text}</div>
       </div>
-    </div>
+    </Col>
   )
 }
 
-export default DefaultLayout
+export default MessageComponent

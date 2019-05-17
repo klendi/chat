@@ -5,7 +5,32 @@ interface IState {
 }
 
 const initialState: IState = {
-  messages: []
+  messages: [
+    {
+      id: 1,
+      text:
+        'CkemiCkemiCkemiCkemiCkemdsadsadsadasdasdasdasdasdasdiCkemiCkemiCkemi.😄',
+      user: 'klendi',
+      isUser: true
+    },
+    {
+      id: 2,
+      text:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam sint rem eum. Distinctio odit aut in libero! Ducimus quia maxime quasi ratione, expedita dolore libero nam, ullam maiores, vitae enim recusandae. Aliquid debitis fugit ea dolorum molestiae commodi, ratione esse, veniam dolores recusandae, consequatur veritatis nemo. Placeat aliquam odit beatae.',
+      user: 'Mia'
+    },
+    {
+      id: 3,
+      text: 'Sup.😄',
+      user: 'klendi',
+      isUser: true
+    },
+    {
+      id: 4,
+      text: 'Yes',
+      user: 'Mia'
+    }
+  ]
 }
 
 const MessagesReducer = (state = initialState, action: any) => {
