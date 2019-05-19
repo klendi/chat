@@ -1,4 +1,6 @@
-import { ADD_MESSAGE_FAIL, ADD_MESSAGE_SUCCESS } from '../actions/types'
+import { ADD_MESSAGE, ADD_NOTIFICATION } from '../actions/types'
+
+import shortid from 'shortid'
 
 interface IState {
   messages: Array<any>
@@ -8,38 +10,41 @@ const initialState: IState = {
   messages: [
     {
       id: 1,
-      text:
-        'CkemiCkemiCkemiCkemiCkemdsadsadsadasdasdasdasdasdasdiCkemiCkemiCkemi.😄',
-      user: 'klendi',
-      isUser: true
+      text: 'Ckemi.😄',
+      author: {
+        name: 'Mia',
+        userID: '456462d35465'
+      }
     },
     {
       id: 2,
-      text:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam sint rem eum. Distinctio odit aut in libero! Ducimus quia maxime quasi ratione, expedita dolore libero nam, ullam maiores, vitae enim recusandae. Aliquid debitis fugit ea dolorum molestiae commodi, ratione esse, veniam dolores recusandae, consequatur veritatis nemo. Placeat aliquam odit beatae.',
-      user: 'Mia'
-    },
-    {
-      id: 3,
-      text: 'Sup.😄',
-      user: 'klendi',
-      isUser: true
-    },
-    {
-      id: 4,
-      text: 'Yes',
-      user: 'Mia'
+      text: 'Helloo',
+      author: {
+        name: 'Klendi',
+        userID: '45646e5465'
+      }
     }
   ]
 }
 
 const MessagesReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case ADD_MESSAGE_SUCCESS:
-      return { ...state, messages: action.payload }
+    case ADD_MESSAGE:
+      const msg = {
+        id: shortid.generate(),
+        text: action.payload.message,
+        author: action.payload.author,
+        type: action.payload.type
+      }
+      return { ...state, messages: [...state.messages, msg] }
 
-    case ADD_MESSAGE_FAIL:
-      return { ...state, error: action.payload }
+    case ADD_NOTIFICATION:
+      const notification = {
+        id: shortid.generate(),
+        text: action.payload.message,
+        type: action.payload.type
+      }
+      return { ...state, messages: [...state.messages, notification] }
 
     default:
       return state

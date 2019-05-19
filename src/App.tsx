@@ -1,10 +1,11 @@
 import React from 'react'
 import ChatContainer from './container/ChatContainer'
+import Router from './routing/router'
 
 const App: React.FC = () => {
   return (
     <div>
-      <ChatContainer />
+      <Router />
     </div>
   )
 }

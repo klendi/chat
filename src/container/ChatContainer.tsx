@@ -1,49 +1,85 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 import MessageComponent from '../components/MessageComponent'
 import InputField from '../components/InputField'
 import Notification from '../components/Notification'
 import { connect } from 'react-redux'
+import { join, leave, _sendMessage } from '../socket'
+import shortid from 'shortid'
+import { login } from '../actions'
 
 interface IProps {
-  users?: [string]
+  users?: [IUser]
   messages: [Object]
+  user?: IUser
+  notifications?: [string]
+}
+
+interface IUser {
+  name: string
+  id: string
 }
 
 class DefaultLayout extends React.Component<IProps> {
-  scrollToMyRef = () => window.scrollTo(0, 800000000)
+  msgRef = React.createRef()
 
   componentDidMount() {
-    this.scrollToMyRef()
+    const username = prompt('Please enter your username', '') || 'Anonymous'
+    login(username)
+    join({
+      name: username,
+      id: shortid.generate()
+    })
+    this.scrollToBottom()
+  }
+  scrollToBottom = () => {
+    //@ts-ignore
+    this.msgRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  componentWillUnmount() {
+    leave(this.props.user)
+  }
+
+  sendMsg = (msg: string) => {
+    _sendMessage({
+      author: this.props.user,
+      id: 'da4654d6sa6',
+      text: msg,
+      type: 'message'
+    })
+    this.scrollToBottom()
   }
 
   render() {
+    const { messages, users, user } = this.props
     return (
       <div>
         <div className="top-bar">
           <Container className="top-bar-users">
             <Row style={{ justifyContent: 'space-between' }}>
-              <div>Online: {this.props.users.map(user => user + ', ')}</div>
-              <div>Klendi</div>
+              <div>Online: {users.map(user => user.name + ', ')}</div>
+              <div>{user.name}</div>
             </Row>
           </Container>
         </div>
         <Container className="messages-container">
           <Row>
-            {this.props.messages.map((message: any) => {
-              return (
-                <MessageComponent
-                  text={message.text}
-                  key={message.id}
-                  user={message.user}
-                  isUser={message.isUser}
-                />
-              )
+            {/* 
+              // @ts-ignore */}
+            {messages.map(({ text, type, id, author }) => {
+              if (type === 'notification') {
+                return <Notification text={text} />
+              } else {
+                return <MessageComponent text={text} key={id} author={author} />
+              }
             })}
-            <Notification />
+            {/* 
+            //@ts-ignore */}
+            <div ref={this.msgRef} />
           </Row>
         </Container>
-        <InputField />
+        <InputField onSendMessage={(msg: any) => this.sendMsg(msg)} />
       </div>
     )
   }
@@ -52,12 +88,9 @@ class DefaultLayout extends React.Component<IProps> {
 const mapStateToProps = (state: any) => {
   return {
     messages: state.MessagesReducer.messages,
-    users: state.PresenceReducer.users
+    users: state.PresenceReducer.users,
+    user: state.PresenceReducer.user
   }
-}
-
-const mapDispatchToProps = {
-  sendMessage: (dispatch: any) => {}
 }
 
 export default connect(mapStateToProps)(DefaultLayout)

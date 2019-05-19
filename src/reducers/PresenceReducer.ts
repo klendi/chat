@@ -1,4 +1,4 @@
-import { JOIN_CHAT, LEAVE_CHAT } from '../actions/types'
+import { JOIN_CHAT, LEAVE_CHAT, LOGIN } from '../actions/types'
 
 interface IState {
   users: Array<string>
@@ -6,19 +6,27 @@ interface IState {
 }
 
 const initialState: IState = {
-  users: ['Klendi', 'Kristi'],
-  user: {
-    name: 'Klendi'
-  }
+  users: [],
+  user: {}
 }
 
 const PresenceReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case JOIN_CHAT:
-      return { ...state, users: [...state.users, action.payload] }
+      return {
+        ...state,
+        users: [...state.users, action.payload]
+      }
+
+    case LOGIN:
+      return {
+        ...state,
+        user: action.payload
+      }
 
     case LEAVE_CHAT:
-      const newUsers = state.users.filter(user => user !== action.payload)
+      //@ts-ignore
+      const newUsers = state.users.filter(user => user.id !== action.payload.id)
       return { ...state, users: newUsers }
 
     default:

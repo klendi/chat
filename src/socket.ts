@@ -1,48 +1,46 @@
 import io from 'socket.io-client'
+import {
+  sendMessage,
+  sendNotification,
+  join as join2,
+  leave as leaveRoom
+} from './actions'
 
-export default function() {
-  const socket = io.connect('http://localhost:3001')
+const socket = io.connect('http://localhost:5000')
 
-  function registerHandler(onMessageReceived: any) {
-    socket.on('message', onMessageReceived)
-  }
+socket.on('userJoined', (user: any) => {
+  join2(user.name)
+})
 
-  function unregisterHandler() {
-    socket.off('message')
-  }
+socket.on('userLeft', (user: any) => {
+  leaveRoom(user)
+})
 
-  socket.on('error', function(err: Error) {
-    console.log('received socket error:')
-    console.log(err)
-  })
+socket.on('newMessage', (data: any) => {
+  sendMessage(data.text, data.author)
+})
 
-  function register(name: string, cb: string) {
-    socket.emit('register', name, cb)
-  }
-
-  function join(chatroomName: string, cb: string) {
-    socket.emit('join', chatroomName, cb)
-  }
-
-  function leave(chatroomName: string, cb: string) {
-    socket.emit('leave', chatroomName, cb)
-  }
-
-  function message(chatroomName: string, msg: string, cb: string) {
-    socket.emit('message', { chatroomName, message: msg }, cb)
-  }
-
-  function getOnlineUsers(cb: string) {
-    socket.emit('onlineUsers', null, cb)
-  }
-
-  return {
-    register,
-    join,
-    leave,
-    message,
-    getOnlineUsers,
-    registerHandler,
-    unregisterHandler
-  }
+function join(user: Object) {
+  socket.emit('join', user)
 }
+
+socket.on('connection', (socket: any) => {
+  console.log('this got called from client')
+})
+
+function leave(user: Object) {
+  socket.emit('leave', user)
+}
+
+interface IMessage {
+  text: string
+  author: Object
+  type: string
+  id: string
+}
+
+function _sendMessage(msg: IMessage) {
+  socket.emit('message', msg)
+}
+
+export { join, leave, _sendMessage, socket }

@@ -1,6 +1,7 @@
-export const ADD_MESSAGE_SUCCESS = 'ADD_MESSAGE_SUCCESS'
-export const ADD_MESSAGE_FAIL = 'ADD_MESSAGE_FAIL'
+export const ADD_MESSAGE = 'ADD_MESSAGE'
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
 
 export const JOIN_CHAT = 'JOIN_CHAT'
+export const LOGIN = 'LOGIN'
 export const LEAVE_CHAT = 'LEAVE_CHAT'
 export const SEND_NOTIFICATION = 'SEND_NOTIFICATION'

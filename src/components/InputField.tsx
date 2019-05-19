@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import {} from 'react-bootstrap'
 
 interface IProps {
   onSendMessage?: Function
@@ -8,19 +7,30 @@ interface IProps {
 
 const InputField: React.FC<IProps> = props => {
   const [text, setText] = useState('')
+
   const onChange = (e: any) => {
     setText(e.target.value)
   }
+
+  const onSubmit = (e: any) => {
+    e.preventDefault()
+    if (props.onSendMessage !== undefined && text !== '')
+      props.onSendMessage(text)
+
+    setText('')
+  }
+
   return (
-    <div className="input-container">
+    <form onSubmit={onSubmit} className="input-container">
       <input
         placeholder={props.placeholder}
         className="input-field"
         type="text"
         value={text}
+        autoFocus
         onChange={onChange}
       />
-    </div>
+    </form>
   )
 }
 
