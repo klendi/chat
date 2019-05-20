@@ -2,6 +2,7 @@ export const ADD_MESSAGE = 'ADD_MESSAGE'
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
 
 export const JOIN_CHAT = 'JOIN_CHAT'
+export const REFRESH_USER_LIST = 'REFRESH_USER_LIST'
 export const LOGIN = 'LOGIN'
 export const LEAVE_CHAT = 'LEAVE_CHAT'
 export const SEND_NOTIFICATION = 'SEND_NOTIFICATION'

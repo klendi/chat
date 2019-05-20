@@ -3,16 +3,17 @@ import {
   sendMessage,
   sendNotification,
   join as join2,
-  leave as leaveRoom
+  leave as leaveRoom,
+  refreshUserList
 } from './actions'
 
 const socket = io.connect('http://localhost:5000')
 
 socket.on('userJoined', (user: any) => {
-  join2(user.name)
+  join2(user.name, user.id)
 })
 
-socket.on('userLeft', (user: any) => {
+socket.on('userDisconnected', (user: any) => {
   leaveRoom(user)
 })
 
@@ -20,16 +21,18 @@ socket.on('newMessage', (data: any) => {
   sendMessage(data.text, data.author)
 })
 
+//@ts-ignore
+socket.on('getOnlineUsers', users => {
+  console.log('client: got online users list', users)
+  refreshUserList(users)
+})
+
 function join(user: Object) {
   socket.emit('join', user)
 }
 
-socket.on('connection', (socket: any) => {
-  console.log('this got called from client')
-})
-
 function leave(user: Object) {
-  socket.emit('leave', user)
+  socket.emit('disconnect', user)
 }
 
 interface IMessage {

@@ -1,4 +1,10 @@
-import { JOIN_CHAT, LEAVE_CHAT, ADD_MESSAGE, LOGIN } from './types'
+import {
+  JOIN_CHAT,
+  LEAVE_CHAT,
+  ADD_MESSAGE,
+  LOGIN,
+  REFRESH_USER_LIST
+} from './types'
 import store from '../store'
 import shortid from 'shortid'
 
@@ -29,10 +35,10 @@ export function sendNotification(message: string) {
   })
 }
 
-export function login(username: string) {
+export function login(username: string, id?: string) {
   const user: IUser = {
     name: username,
-    id: shortid.generate()
+    id
   }
   store.dispatch({
     type: LOGIN,
@@ -40,10 +46,17 @@ export function login(username: string) {
   })
 }
 
-export function join(username: string) {
+export function refreshUserList(users: [string]) {
+  store.dispatch({
+    type: REFRESH_USER_LIST,
+    payload: users
+  })
+}
+
+export function join(username: string, id?: string) {
   const user: IUser = {
     name: username,
-    id: shortid.generate()
+    id
   }
   sendNotification(`${username} has joined the chat`)
   store.dispatch({
@@ -54,6 +67,7 @@ export function join(username: string) {
 
 export function leave(user: IUser) {
   sendNotification(`${user.name} has left the chat`)
+  console.log('actions: trying to remove ', user.name)
   store.dispatch({
     type: LEAVE_CHAT,
     payload: user

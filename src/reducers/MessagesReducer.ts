@@ -7,24 +7,7 @@ interface IState {
 }
 
 const initialState: IState = {
-  messages: [
-    {
-      id: 1,
-      text: 'Ckemi.😄',
-      author: {
-        name: 'Mia',
-        userID: '456462d35465'
-      }
-    },
-    {
-      id: 2,
-      text: 'Helloo',
-      author: {
-        name: 'Klendi',
-        userID: '45646e5465'
-      }
-    }
-  ]
+  messages: []
 }
 
 const MessagesReducer = (state = initialState, action: any) => {

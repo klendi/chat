@@ -4,7 +4,7 @@ import MessageComponent from '../components/MessageComponent'
 import InputField from '../components/InputField'
 import Notification from '../components/Notification'
 import { connect } from 'react-redux'
-import { join, leave, _sendMessage } from '../socket'
+import { join, _sendMessage } from '../socket'
 import shortid from 'shortid'
 import { login } from '../actions'
 
@@ -25,20 +25,17 @@ class DefaultLayout extends React.Component<IProps> {
 
   componentDidMount() {
     const username = prompt('Please enter your username', '') || 'Anonymous'
-    login(username)
+    const id = shortid.generate()
     join({
       name: username,
-      id: shortid.generate()
+      id
     })
+    login(username, id)
     this.scrollToBottom()
   }
   scrollToBottom = () => {
     //@ts-ignore
     this.msgRef.current.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  componentWillUnmount() {
-    leave(this.props.user)
   }
 
   sendMsg = (msg: string) => {
