@@ -7,7 +7,7 @@ import {
   refreshUserList
 } from './actions'
 
-const socket = io.connect('http://localhost:5000')
+const socket = io.connect('https://klendi-chat.herokuapp.com')
 
 socket.on('userJoined', (user: any) => {
   join2(user.name, user.id)
